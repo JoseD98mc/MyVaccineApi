@@ -1,0 +1,442 @@
+{
+  "info": {
+    "name": "MyVaccine API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5133" },
+    { "key": "token",   "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/Auth/register", "host": ["{{baseUrl}}"], "path": ["api","Auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test@email.com\",\n  \"password\": \"Test1234!\",\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"birthdate\": \"1995-05-15T00:00:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/Auth/login", "host": ["{{baseUrl}}"], "path": ["api","Auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test@email.com\",\n  \"password\": \"Test1234!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/Auth/refresh-token", "host": ["{{baseUrl}}"], "path": ["api","Auth","refresh-token"] }
+          }
+        },
+        {
+          "name": "Get User Info",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Auth/user-info", "host": ["{{baseUrl}}"], "path": ["api","Auth","user-info"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Allergy",
+      "item": [
+        {
+          "name": "Get All Allergies",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Allergy", "host": ["{{baseUrl}}"], "path": ["api","Allergy"] }
+          }
+        },
+        {
+          "name": "Get Allergy By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Allergy/ALLERGY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Allergy","ALLERGY_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create Allergy",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/Allergy", "host": ["{{baseUrl}}"], "path": ["api","Allergy"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Alergia al polen\"\n}" }
+          }
+        },
+        {
+          "name": "Update Allergy",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/Allergy/update/ALLERGY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Allergy","update","ALLERGY_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Alergia al polvo\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Allergy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Allergy/delete/ALLERGY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Allergy","delete","ALLERGY_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "FamilyGroup",
+      "item": [
+        {
+          "name": "Get All FamilyGroups",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup"] }
+          }
+        },
+        {
+          "name": "Get My FamilyGroups",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup/mine", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup","mine"] }
+          }
+        },
+        {
+          "name": "Get FamilyGroup By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup/FAMILYGROUP_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup","FAMILYGROUP_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create FamilyGroup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Familia Pérez\"\n}" }
+          }
+        },
+        {
+          "name": "Update FamilyGroup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup/update/FAMILYGROUP_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup","update","FAMILYGROUP_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"familyGroupId\": \"FAMILYGROUP_ID_AQUI\",\n  \"name\": \"Familia González\"\n}" }
+          }
+        },
+        {
+          "name": "Delete FamilyGroup",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/FamilyGroup/delete/FAMILYGROUP_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","FamilyGroup","delete","FAMILYGROUP_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dependents",
+      "item": [
+        {
+          "name": "Get All Dependents",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dependents", "host": ["{{baseUrl}}"], "path": ["api","Dependents"] }
+          }
+        },
+        {
+          "name": "Get Dependent By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dependents/DEPENDENT_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Dependents","DEPENDENT_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create Dependent",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/Dependents", "host": ["{{baseUrl}}"], "path": ["api","Dependents"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"María Pérez\",\n  \"dateOfBirth\": \"2015-03-10T00:00:00\",\n  \"familyGroupId\": \"FAMILYGROUP_ID_AQUI\"\n}" }
+          }
+        },
+        {
+          "name": "Update Dependent",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/Dependents/update/DEPENDENT_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Dependents","update","DEPENDENT_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"María Pérez Actualizada\",\n  \"dateOfBirth\": \"2015-03-10T00:00:00\",\n  \"familyGroupId\": \"FAMILYGROUP_ID_AQUI\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Dependent",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Dependents/delete/DEPENDENT_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Dependents","delete","DEPENDENT_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "VaccineCategory",
+      "item": [
+        {
+          "name": "Get All VaccineCategories",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineCategory", "host": ["{{baseUrl}}"], "path": ["api","VaccineCategory"] }
+          }
+        },
+        {
+          "name": "Get VaccineCategory By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineCategory/VACCINECATEGORY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineCategory","VACCINECATEGORY_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create VaccineCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/VaccineCategory", "host": ["{{baseUrl}}"], "path": ["api","VaccineCategory"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Pediátrica\"\n}" }
+          }
+        },
+        {
+          "name": "Update VaccineCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/VaccineCategory/update/VACCINECATEGORY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineCategory","update","VACCINECATEGORY_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Adultos\"\n}" }
+          }
+        },
+        {
+          "name": "Delete VaccineCategory",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineCategory/delete/VACCINECATEGORY_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineCategory","delete","VACCINECATEGORY_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vaccine",
+      "item": [
+        {
+          "name": "Get All Vaccines",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Vaccine", "host": ["{{baseUrl}}"], "path": ["api","Vaccine"] }
+          }
+        },
+        {
+          "name": "Get Vaccine By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Vaccine/VACCINE_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Vaccine","VACCINE_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create Vaccine",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/Vaccine", "host": ["{{baseUrl}}"], "path": ["api","Vaccine"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"COVID-19\",\n  \"requiresBooster\": true,\n  \"categoryIds\": []\n}" }
+          }
+        },
+        {
+          "name": "Update Vaccine",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/Vaccine/update/VACCINE_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Vaccine","update","VACCINE_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"COVID-19 Actualizada\",\n  \"requiresBooster\": false,\n  \"categoryIds\": []\n}" }
+          }
+        },
+        {
+          "name": "Delete Vaccine",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Vaccine/delete/VACCINE_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","Vaccine","delete","VACCINE_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "VaccineRecord",
+      "item": [
+        {
+          "name": "Get All VaccineRecords",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineRecord", "host": ["{{baseUrl}}"], "path": ["api","VaccineRecord"] }
+          }
+        },
+        {
+          "name": "Get VaccineRecord By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineRecord/VACCINERECORD_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineRecord","VACCINERECORD_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create VaccineRecord",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/VaccineRecord", "host": ["{{baseUrl}}"], "path": ["api","VaccineRecord"] },
+            "body": { "mode": "raw", "raw": "{\n  \"vaccineId\": \"VACCINE_ID_AQUI\",\n  \"dependentId\": \"DEPENDENT_ID_AQUI\",\n  \"dateAdministered\": \"2024-01-15T10:00:00\",\n  \"administeredLocation\": \"Hospital San Vicente\",\n  \"administeredBy\": \"Dr. García\"\n}" }
+          }
+        },
+        {
+          "name": "Update VaccineRecord",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/VaccineRecord/update/VACCINERECORD_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineRecord","update","VACCINERECORD_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"vaccineId\": \"VACCINE_ID_AQUI\",\n  \"dependentId\": \"DEPENDENT_ID_AQUI\",\n  \"dateAdministered\": \"2024-02-20T10:00:00\",\n  \"administeredLocation\": \"Clínica Las Américas\",\n  \"administeredBy\": \"Dr. Martínez\"\n}" }
+          }
+        },
+        {
+          "name": "Delete VaccineRecord",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/VaccineRecord/delete/VACCINERECORD_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","VaccineRecord","delete","VACCINERECORD_ID_AQUI"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "UsersAllergy",
+      "item": [
+        {
+          "name": "Get All UsersAllergies",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/UsersAllergy", "host": ["{{baseUrl}}"], "path": ["api","UsersAllergy"] }
+          }
+        },
+        {
+          "name": "Get UsersAllergy By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/UsersAllergy/USER_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","UsersAllergy","USER_ID_AQUI"] }
+          }
+        },
+        {
+          "name": "Create UsersAllergy",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/UsersAllergy", "host": ["{{baseUrl}}"], "path": ["api","UsersAllergy"] },
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"USER_ID_AQUI\",\n  \"allergyId\": \"ALLERGY_ID_AQUI\"\n}" }
+          }
+        },
+        {
+          "name": "Update UsersAllergy",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/UsersAllergy/update/USER_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","UsersAllergy","update","USER_ID_AQUI"] },
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"USER_ID_AQUI\",\n  \"allergyId\": \"ALLERGY_ID_NUEVO_AQUI\"\n}" }
+          }
+        },
+        {
+          "name": "Delete UsersAllergy",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/UsersAllergy/delete/USER_ID_AQUI", "host": ["{{baseUrl}}"], "path": ["api","UsersAllergy","delete","USER_ID_AQUI"] }
+          }
+        }
+      ]
+    }
+  ]
+}
